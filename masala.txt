@@ -1,0 +1,822 @@
+    *****************************************************************************************************
+    SERVICE WORKER    PWA
+        if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js', { scope: "/" }).then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope:', registration.scope);
+        }).catch(function (err) {
+            // Registration failed
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+*********************************************************************************************************
+-------------------NAVIGATION OR ROUTING---------------------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyStatefulWidget(),
+      theme: ThemeData(
+        primaryColor: Colors.blue, // Customize primary color
+      // Customize accent color
+      ),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String _appBarTitle = 'Home';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+      ),
+      drawer: Drawer(
+        elevation: 20.0,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Text("SIES", style: TextStyle(color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "SIES GST",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  Text(
+                    "siesgst@gmail.com",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text("Inbox"),
+              leading: Icon(Icons.mail),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Inbox';
+                });
+              },
+            ),
+            Divider(
+              height: 0.1,
+            ),
+            ListTile(
+              title: Text("Primary"),
+              leading: Icon(Icons.inbox),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Primary';
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Social"),
+              leading: Icon(Icons.people),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Social';
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Promotions"),
+              leading: Icon(Icons.local_offer),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Promotions';
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to $_appBarTitle',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
+*********************************************************************************************************
+---------------------BOTTOM NAVIGATION----------------------------------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyStatefulWidget(),
+      theme: ThemeData(
+        primaryColor: Colors.blue, // Customize primary color
+      ),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String _appBarTitle = 'MailScanner';
+  int _selectedIndex = 0;
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('MailScanner Screen'),
+    Text('Primary Screen'),
+    Text('Social Screen'),
+    Text('Promotions Screen'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      switch (index) {
+        case 0:
+          _appBarTitle = 'MailScanner';
+          break;
+        case 1:
+          _appBarTitle = 'Primary';
+          break;
+        case 2:
+          _appBarTitle = 'Social';
+          break;
+        case 3:
+          _appBarTitle = 'Promotions';
+          break;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue, // Background color of the navigation bar
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            label: 'Inbox',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inbox),
+            label: 'Primary',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Social',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_offer),
+            label: 'Promotions',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 7, 134, 79), // Color of selected item
+        unselectedItemColor:  Colors.blue, // Color of unselected items
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+********************************************************************************************************
+-----------------------------Program:Row,column and container-------------------------------------------
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'First App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('hello ninjas'),
+          backgroundColor: Colors.blue,
+          leading: const Icon(Icons.home),
+          centerTitle: true,
+          foregroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Colors.red, size: 40),
+        ),
+        body: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 800.0,
+                    height: 80.0,
+                    color: const Color.fromARGB(255, 117, 194, 120),
+                    child: Text(
+                      'Message 1',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        wordSpacing: 5,
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic,
+                        shadows: [
+                          Shadow(
+                            color: Colors.orangeAccent,
+                            offset: Offset(2, 1),
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    width: 800.0,
+                    height: 80.0,
+                    color: const Color.fromARGB(255, 117, 194, 120),
+                    child: Text(
+                      'Message 2',
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.fade,
+                      softWrap: true,
+                      style: const TextStyle(
+                        wordSpacing: 5,
+                        fontSize: 30,
+                        fontStyle: FontStyle.italic,
+                        shadows: [
+                          Shadow(
+                            color: Colors.orangeAccent,
+                            offset: Offset(2, 1),
+                            blurRadius: 5,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+*********************************************************************************************************--------------------To design Flutter UI by including common widgets. (Text ,Buttons, Container, Scaffold, AppBar,
+Row, Column)--------------------------------------------------------------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+   return MaterialApp(
+title: 'First App',
+debugShowCheckedModeBanner : false,
+theme:ThemeData(primarySwatch:Colors.blue),
+home:Scaffold(appBar: AppBar(
+title: const
+Text(
+'MyApp-Srinivas'
+),
+backgroundColor:Colors.blue,
+leading: const Icon(Icons.home),
+centerTitle:true,
+
+foregroundColor: Colors.white,
+iconTheme:IconThemeData(color: Colors.yellow,size: 40)
+),
+body: Center(child: Text('Hello its srinii')
+),//text is the inner most widget //Center
+)//Scaffold
+);// MaterialApp
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+    
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+      
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        
+        title: Text(widget.title),
+      ),
+      body: Center(
+      
+        child: Column(
+          
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), 
+    );
+  }
+}
+
+******************************************************************************************************
+-----------------------LIST VIEW EXP 3---------------------------------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+  static List<String> images = [
+    "images/abh.jpeg",
+    "images/download.jpeg",
+    "images/website.jpg"
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.yellow,
+          title: const Center(child: Text('SAAD')),
+        ),
+        body: ListView.builder(itemBuilder: (buildContext, index) {
+    
+          return  Card(
+              child: ListTile(
+                leading:CircleAvatar(backgroundImage: AssetImage(images[index]),),
+            title: Text('Title'),
+            subtitle: Text('subtitle'),
+          ));
+        },
+        itemCount: images.length,
+        ),
+        // padding: const EdgeInsets.all(50),
+        // reverse: true,
+        // shrinkWrap: true,
+        // children: [
+        //   Card(
+        //     child: ListTile(
+        //       title: Text("Item number one"),
+        //     ),
+        //   ),
+        //   Card(
+        //     child: ListTile(
+        //       title: Text("Item number two"),
+        //     ),
+        //   ),
+        //   Card(
+        //     child: ListTile(
+        //       title: Text("Item number three"),
+        //     ),
+        //   ),
+        // ],
+      ),
+    );
+  }
+}
+----------------pubsec.yaml for list view     
+assets:
+    - images/abh.jpeg
+    - images/download.jpeg
+    - images/website.jpg
+    - images/download.jpg----------------------------------------------------------------------------
+    **************************************************************************************************
+    **************************************************************************************************
+    --------------------FORM VALIDATION--------------------------------------------------------------
+
+
+import 'package:flutter/material.dart'; 
+ 
+void main() => 
+runApp(const MyApp()); 
+ 
+ 
+class MyApp extends StatelessWidget { 
+const MyApp({Key? key}) : super(key: key); 
+ 
+@override 
+Widget build(BuildContext context) { 
+const appTitle="Form Validation Demo"; 
+ 
+return MaterialApp( 
+debugShowCheckedModeBanner: false, 
+title: appTitle, 
+home: Scaffold( 
+appBar: AppBar( 
+title: const Text(appTitle), 
+), 
+body: const MyCustomForm(), 
+), 
+); 
+} 
+} 
+ 
+class MyCustomForm extends StatefulWidget{ 
+const MyCustomForm({Key? key}):super(key: key); 
+ 
+@override 
+State<StatefulWidget> createState() { 
+return MyCustomFormState(); 
+} 
+} 
+ 
+class MyCustomFormState extends State <MyCustomForm>{ 
+final _formKey = GlobalKey<FormState>(); 
+ 
+@override 
+Widget build(BuildContext context) { 
+return Form( 
+key: _formKey, 
+child: Column( 
+crossAxisAlignment: CrossAxisAlignment.start, 
+children: [ 
+TextFormField( 
+decoration: const InputDecoration( 
+icon: Icon(Icons.person), 
+hintText: 'Enter Your Name', 
+labelText: 'Name', 
+), 
+validator: (value) { 
+if(value==null || value.isEmpty){ 
+return 'Please enter some text'; 
+} 
+return null; 
+}, 
+), 
+TextFormField( 
+decoration: const InputDecoration( 
+icon: Icon(Icons.phone), 
+hintText: 'Enter Your Phone No.', 
+labelText: 'Phone No.', 
+), 
+validator: (value) { 
+if(value==null || value.isEmpty || value.length!=10 ){ 
+return 'Please enter a valid phone no.'; 
+} 
+return null; 
+}, 
+), 
+TextFormField( 
+decoration: const InputDecoration( 
+icon: Icon(Icons.calendar_today), 
+hintText: 'Enter Your DOB', 
+labelText: 'DOB', 
+), 
+validator: (value) { 
+if(value==null || value.isEmpty){ 
+return 'Please enter your dob'; 
+} 
+return null; 
+}, 
+), 
+ElevatedButton( 
+onPressed: () { 
+if(_formKey.currentState!.validate()){ 
+ScaffoldMessenger.of(context).showSnackBar( 
+const SnackBar(content: Text('Processing Data')), 
+); 
+ 
+} 
+}, 
+child: const Text('Submit'), 
+) 
+], 
+), 
+); 
+} 
+}
+*******************************************************************************************************
+-------------------------SIDE NAVIGATIONN BARR--------------------------------------------------
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyStatefulWidget(),
+      theme: ThemeData(
+        primaryColor: Colors.blue, // Customize primary color
+      // Customize accent color
+      ),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String _appBarTitle = 'Home';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+      ),
+      drawer: Drawer(
+        elevation: 20.0,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Text("SIES", style: TextStyle(color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "SIES GST",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  Text(
+                    "siesgst@gmail.com",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text("Inbox"),
+              leading: Icon(Icons.mail),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Inbox';
+                });
+              },
+            ),
+            Divider(
+              height: 0.1,
+            ),
+            ListTile(
+              title: Text("Primary"),
+              leading: Icon(Icons.inbox),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Primary';
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Social"),
+              leading: Icon(Icons.people),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Social';
+                });
+              },
+            ),
+            ListTile(
+              title: Text("Promotions"),
+              leading: Icon(Icons.local_offer),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _appBarTitle = 'Promotions';
+                });
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to $_appBarTitle',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+}
+-*******************************************************************************************************
+--------------------------BOTTOM NAVIGATION----------------------------------------------------------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyStatefulWidget(),
+      theme: ThemeData(
+        primaryColor: Colors.blue, // Customize primary color
+      ),
+    );
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String _appBarTitle = 'MailScanner';
+  int _selectedIndex = 0;
+
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('MailScanner Screen'),
+    Text('Primary Screen'),
+    Text('Social Screen'),
+    Text('Promotions Screen'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      switch (index) {
+        case 0:
+          _appBarTitle = 'MailScanner';
+          break;
+        case 1:
+          _appBarTitle = 'Primary';
+          break;
+        case 2:
+          _appBarTitle = 'Social';
+          break;
+        case 3:
+          _appBarTitle = 'Promotions';
+          break;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_appBarTitle),
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue, // Background color of the navigation bar
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            label: 'Inbox',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inbox),
+            label: 'Primary',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Social',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_offer),
+            label: 'Promotions',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 7, 134, 79), // Color of selected item
+        unselectedItemColor:  Colors.blue, // Color of unselected items
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+*******************************************************************************************************
+---------------------------------LAYOUT BUILDEREXPERIMENT----------------------------------------------
+
+import 'package:flutter/material.dart';
+void main() => runApp(const Home());
+class Home extends StatelessWidget {
+const Home({Key? key}) : super(key: key);
+@override
+Widget build(BuildContext context) {
+return MaterialApp(
+home: Scaffold(
+appBar: AppBar(
+title: Text("Geeks for Geeks"),
+backgroundColor: Colors.purple,
+),
+body: Container(
+color: Colors.blue,
+height: MediaQuery.of(context).size.height / 2,
+width: MediaQuery.of(context).size.width / 2,
+),
+),
+);
+}
+}
+********************************************************************************************************
+-----------------

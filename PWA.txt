@@ -1,0 +1,116 @@
+INDEX.HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="manifest" href="manifest.webmanifest">
+<link rel="service" href="sw.js">
+</head>
+<body>
+    <h1>asfadsfsdaf</h1>
+</body>
+<script>
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js', { scope: "/" }).then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope:', registration.scope);
+        }).catch(function (err) {
+            // Registration failed
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+
+    </script>
+</html>
+
+
+
+
+
+
+
+
+
+
+sw.js
+
+
+if(
+    'serviceWorker' in navigator
+    ){
+    window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/sw.js',{scope:"/"}).then(function(registration){
+    console.log('Service worker registration successfull with scope:', registration.scope);
+    },function(err){
+    console.log('Service worker registration failed: ', err);
+    });
+    })
+    }
+    var CACHE_NAME = 'my-site-cache-v1';
+    var urlsToCache = [
+    '/',
+    'index.html',
+];
+self.addEventListener('install',function(event){
+event.waitUntil(
+caches.open(CACHE_NAME)
+.then(function(cache){
+console.log('Opened Cache');
+return cache.addAll(urlsToCache);
+})
+)
+});
+
+
+
+
+manifest.webmanifest
+
+
+
+{ 
+    "short_name": "SIES-PWA", "name": "PWA Lab Manual", "icons":
+     [
+{
+"src": "assets/icons/icon-48x48.png", "sizes": "48x48",
+"type": "image/png",
+"purpose": "any"
+},
+{ "src": "assets/icons/icon-72x72.png", "sizes": "72x72",
+"type": "image/png",
+"purpose": "any"
+},
+{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96",
+"type": "image/png",
+"purpose": "any"},
+{ "src": "assets/icons/icon-128x128.png", "sizes": "128x128",
+"type": "image/png",
+"purpose": "any"
+},
+{ "src": "assets/icons/icon-144x144.png", "sizes": "144x144",
+"type": "image/png",
+"purpose": "any"
+} ],
+"id": "/?source=pwa", "start_url": "/?source=pwa",
+"background_color": "#3367D6", "display": "standalone",
+"scope": "/", "theme_color": "#3367D6", "shortcuts": [
+{ "name": "PWA Lab Manual 1", "short_name": "PWA1", "description": "PWA Lab 1", "url":
+"?source=pwa",
+"icons": [{ "src": "assets/icons/icon-144x144.png", "sizes": "144x144" }]
+},
+{ "name": "PWA Lab Manual 2", "short_name": "PWA2", "description": "PWA Lab 2", "url":
+"?source=pwa",
+"icons": [{ "src": "assets/icons/icon-144x144.png", "sizes": "144x144" }]
+}
+],
+"description": "PWA Lab ", "screenshots": [
+{
+"src": "assets/icons/icon-512x512.png", "sizes": "512x512",
+"type": "image/png"
+} ] }
